@@ -11,31 +11,24 @@
     <link rel="stylesheet" href="css/onsen-css-components.min.css" />
   </head>
   <body>
-    <ons-page>
-      <div style="text-align: center; margin-top: 200px">
-        <p>
-          <ons-input
-            id="username"
-            placeholder="Username"
-            modifier="underbar"
-          ></ons-input>
-        </p>
+    <ons-splitter>
+      <!-- The side menu -->
+      <ons-splitter-side id="menu" collapse width="220px" collapse swipeable>
+        <ons-page>
+          <ons-list>
+            <ons-list-item onclick="loadPage('about.html')">
+              About
+            </ons-list-item>
+          </ons-list>
+        </ons-page>
+      </ons-splitter-side>
 
-        <p>
-          <ons-input
-            id="password"
-            placeholder="Password"
-            type="password"
-            modifier="underbar"
-          >
-          </ons-input>
-        </p>
+      <!-- Everything not in the side menu -->
+      <ons-splitter-content>
+        <ons-navigator id="navigator" page="login.html"></ons-navigator>
+      </ons-splitter-content>
+    </ons-splitter>
 
-        <p>
-          <ons-button onclick="login()">Sign in</ons-button>
-        </p>
-      </div>
-    </ons-page>
     <script type="text/javascript" src="cordova.js"></script>
     <script src="js/onsenui.min.js"></script>
     <script src="js/jquery-3.4.0.min.js"></script>

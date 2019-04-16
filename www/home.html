@@ -1,15 +1,15 @@
-<ons-page>
-  <ons-toolbar>
+<ons-page id="home">
+  <ons-toolbar id="home-toolbar">
     <div class="left">
-      <ons-toolbar-button onclick="fn.open()">
+      <ons-toolbar-button onclick="openMenu()">
         <ons-icon icon="md-menu"></ons-icon>
       </ons-toolbar-button>
     </div>
-    <div class="center">
-      Main
-    </div>
+    <div class="center" style="text-align: center">Pokemon</div>
   </ons-toolbar>
-  <p style="text-align: center; opacity: 0.6; padding-top: 20px;">
-    Swipe right to open the menu!
-  </p>
+
+  <ons-tabbar id="tabbar">
+    <ons-tab page="pokemon.html" label="Pokémon" icon="md-face"> </ons-tab>
+    <ons-tab page="saved.html" label="Saved" icon="md-save"></ons-tab>
+  </ons-tabbar>
 </ons-page>
