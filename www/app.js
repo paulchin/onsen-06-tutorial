@@ -35,9 +35,30 @@ let savedPokemon = [];
 const addPokemonToGrid = pokenumber => {
   // we save a list so we can pass it to the gallery
   savedPokemon.push(pokenumber);
+
+  // now add the new pokemon to the grid
+  var grid = $('#grid')[0];
+  //create a new div element
+  var cell = $('<div>')[0];
+
+  cell.onclick = function() {
+    $('#navigator')[0].bringPageTop('gallery.html', {
+      data: { pokenumber, savedPokemon }
+    });
+  };
+
+  var imgsrc = 'img/' + pokenumber + '.png';
+  var image = $('<img>', { src: imgsrc })[0]; //--create new image
+
+  //var image = $('<img>').attr('src', `img/${pokenumber}.png`)[0];
+
+  cell.append(image);
+
+  grid.append(cell);
 };
 
-const savePokemon = (pokenumber, button) => {
+function savePokemon(pokenumber, button) {
   addPokemonToGrid(pokenumber);
-  button.parentNode.parentNode.hideExpansion();
-};
+  //looks for its parent ons-list-item
+  button.closest('ons-list-item').hideExpansion();
+}

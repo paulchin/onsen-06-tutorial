@@ -2,10 +2,38 @@
   <script></script>
 
   <ons-list id="pokemon-list">
-    <ons-list-item>bulbasaur</ons-list-item>
-    <ons-list-item>charmander</ons-list-item>
-    <ons-list-item>squirtle</ons-list-item>
-    <ons-list-item>pikachu</ons-list-item>
-    <ons-list-item>trubbish</ons-list-item>
+    <ons-list-item expandable>
+      bulbasaur
+      <div class="expandable-content">
+        <ons-button onclick="savePokemon(1,this)">Save</ons-button>
+      </div>
+    </ons-list-item>
+    <ons-list-item expandable>
+      charmander
+      <div class="expandable-content">
+        <ons-button onclick="savePokemon(4, this)">Save</ons-button>
+      </div>
+    </ons-list-item>
+
+    <ons-list-item expandable>
+      squirtle
+      <div class="expandable-content">
+        <ons-button onclick="savePokemon(7, this)">Save</ons-button>
+      </div>
+    </ons-list-item>
+
+    <ons-list-item expandable>
+      pikachu
+      <div class="expandable-content">
+        <ons-button onclick="savePokemon(25, this)">Save</ons-button>
+      </div>
+    </ons-list-item>
+
+    <ons-list-item expandable>
+      trubbish
+      <div class="expandable-content">
+        <ons-button onclick="savePokemon(50, this)">Save</ons-button>
+      </div>
+    </ons-list-item>
   </ons-list>
 </ons-page>

@@ -1,5 +1,18 @@
 <ons-page id="saved">
-  <script></script>
+  <style>
+    #grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      grid-auto-rows: 33vw;
+    }
 
-  <p>Saved Pokémon go here.</p>
+    #grid img {
+      width: 100%;
+      height: 100%;
+    }
+  </style>
+
+  <div id="content">
+    <div id="grid"></div>
+  </div>
 </ons-page>
