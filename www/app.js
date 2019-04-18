@@ -38,18 +38,25 @@ function addPokemonToGrid(pokenumber) {
 
   // now add the new pokemon to the grid in saved.html
   var grid = $('#grid')[0];
-  //create a new div element
-  var cell = $('<div>')[0];
 
-  cell.onclick = function() {
+  //create a new div element
+  var cell = $('<div>').on('click', function() {
     $('#navigator')[0].bringPageTop('gallery.html', {
       data: { pokenumber, savedPokemon }
     });
-  };
+  })[0];
+
+  //--- works as well ---
+  // var cell = $('<div>').click(function() {
+  //   $('#navigator')[0].bringPageTop('gallery.html', {
+  //     data: { pokenumber, savedPokemon }
+  //   });
+  // })[0];
 
   var imgsrc = 'img/' + pokenumber + '.png';
   var image = $('<img>', { src: imgsrc })[0]; //--create new image
 
+  //--- works as well ---
   //var image = $('<img>').attr('src', `img/${pokenumber}.png`)[0];
 
   cell.append(image);
@@ -64,41 +71,7 @@ function savePokemon(pokenumber, button) {
   button.closest('ons-list-item').hideExpansion();
 }
 
-//--- called from gallery.html ---
-// document.addEventListener('show', ({ target }) => {
-//   if (target.matches('#gallery')) {
-//     const { pokenumber, savedPokemon } = document.querySelector(
-//       '#navigator'
-//     ).topPage.data;
-
-//     const carousel = document.querySelector('#carousel');
-
-//     // figure out what new pokemon have been saved since we last showed the gallery
-//     // this way we don't accidentally add the same pokemon twice
-//     const sliceIndex = carousel.itemCount - savedPokemon.length;
-
-//     if (sliceIndex !== 0) {
-//       // if there are unadded pokemon
-//       const unaddedPokemon = savedPokemon.slice(sliceIndex);
-
-//       unaddedPokemon.map(number => {
-//         const carouselItem = ons.createElement(`
-//           <ons-carousel-item>
-//             <ons-card>
-//               <img class="gallery-image" src="img/${number}.png" />
-//             </ons-card>
-//           </ons-carousel-item>
-//         `);
-
-//         carousel.appendChild(carouselItem);
-//       });
-//     }
-
-//     // go to the selected pokemon
-//     carousel.setActiveIndex(savedPokemon.indexOf(pokenumber));
-//   }
-// });
-
+//--- to catch the show event from gallery.html ---
 $(document).on('show', function({ target }) {
   if (target.matches('#gallery')) {
     const { pokenumber, savedPokemon } = document.querySelector(
