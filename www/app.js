@@ -32,11 +32,11 @@ document.addEventListener('prechange', function({ target, tabItem }) {
 //--- called from pokemon.html ---
 let savedPokemon = [];
 
-const addPokemonToGrid = pokenumber => {
+function addPokemonToGrid(pokenumber) {
   // we save a list so we can pass it to the gallery
   savedPokemon.push(pokenumber);
 
-  // now add the new pokemon to the grid
+  // now add the new pokemon to the grid in saved.html
   var grid = $('#grid')[0];
   //create a new div element
   var cell = $('<div>')[0];
@@ -55,10 +55,80 @@ const addPokemonToGrid = pokenumber => {
   cell.append(image);
 
   grid.append(cell);
-};
+}
 
+//--- called from pokemon.html ---
 function savePokemon(pokenumber, button) {
   addPokemonToGrid(pokenumber);
   //looks for its parent ons-list-item
   button.closest('ons-list-item').hideExpansion();
 }
+
+//--- called from gallery.html ---
+// document.addEventListener('show', ({ target }) => {
+//   if (target.matches('#gallery')) {
+//     const { pokenumber, savedPokemon } = document.querySelector(
+//       '#navigator'
+//     ).topPage.data;
+
+//     const carousel = document.querySelector('#carousel');
+
+//     // figure out what new pokemon have been saved since we last showed the gallery
+//     // this way we don't accidentally add the same pokemon twice
+//     const sliceIndex = carousel.itemCount - savedPokemon.length;
+
+//     if (sliceIndex !== 0) {
+//       // if there are unadded pokemon
+//       const unaddedPokemon = savedPokemon.slice(sliceIndex);
+
+//       unaddedPokemon.map(number => {
+//         const carouselItem = ons.createElement(`
+//           <ons-carousel-item>
+//             <ons-card>
+//               <img class="gallery-image" src="img/${number}.png" />
+//             </ons-card>
+//           </ons-carousel-item>
+//         `);
+
+//         carousel.appendChild(carouselItem);
+//       });
+//     }
+
+//     // go to the selected pokemon
+//     carousel.setActiveIndex(savedPokemon.indexOf(pokenumber));
+//   }
+// });
+
+$(document).on('show', function({ target }) {
+  if (target.matches('#gallery')) {
+    const { pokenumber, savedPokemon } = document.querySelector(
+      '#navigator'
+    ).topPage.data;
+
+    const carousel = document.querySelector('#carousel');
+
+    // figure out what new pokemon have been saved since we last showed the gallery
+    // this way we don't accidentally add the same pokemon twice
+    const sliceIndex = carousel.itemCount - savedPokemon.length;
+
+    if (sliceIndex !== 0) {
+      // if there are unadded pokemon
+      const unaddedPokemon = savedPokemon.slice(sliceIndex);
+
+      unaddedPokemon.map(number => {
+        const carouselItem = ons.createElement(`
+          <ons-carousel-item>
+            <ons-card>
+              <img class="gallery-image" src="img/${number}.png" />
+            </ons-card>
+          </ons-carousel-item>
+        `);
+
+        carousel.appendChild(carouselItem);
+      });
+    }
+
+    // go to the selected pokemon
+    carousel.setActiveIndex(savedPokemon.indexOf(pokenumber));
+  }
+});

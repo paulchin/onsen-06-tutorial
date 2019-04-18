@@ -1,6 +1,22 @@
-<ons-page>
-  <ons-toolbar>
-    <div class="center" style="text-align: center">Gallery</div>
+<ons-page id="gallery">
+  <style>
+    .gallery-image {
+      width: 100%;
+    }
+  </style>
+
+  <ons-toolbar id="picture-toolbar">
+    <div class="left">
+      <ons-back-button></ons-back-button>
+    </div>
   </ons-toolbar>
-  <p style="text-align: center"></p>
+
+  <ons-carousel
+    id="carousel"
+    fullscreen
+    swipeable
+    auto-scroll
+    auto-scroll-ratio="0.1"
+  >
+  </ons-carousel>
 </ons-page>
