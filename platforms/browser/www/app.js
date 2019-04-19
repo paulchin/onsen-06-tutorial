@@ -37,7 +37,7 @@ document.addEventListener('prechange', function(event) {
 // });
 
 //--- called from pokemon.html ---
-let savedPokemon = [];
+var savedPokemon = [];
 
 function addPokemonToGrid(pokenumber) {
   // we save a list so we can pass it to the gallery
@@ -83,20 +83,20 @@ $(document).on('show', function({ target }) {
   if (target.matches('#gallery')) {
     var { pokenumber, savedPokemon } = $('#navigator')[0].topPage.data;
 
-    //const carousel = document.querySelector('#carousel');
+    //var carousel = document.querySelector('#carousel');
     var carousel = $('#carousel');
 
     // figure out what new pokemon have been saved since we last showed the gallery
     // this way we don't accidentally add the same pokemon twice
     // -ve sliceIndex means extract from the end of the array
-    const sliceIndex = carousel.itemCount - savedPokemon.length;
+    var sliceIndex = carousel.itemCount - savedPokemon.length;
 
     if (sliceIndex !== 0) {
       // if there are unadded pokemon, -ve sliceIndex means extract last element of savedPokemon.
-      const unaddedPokemon = savedPokemon.slice(sliceIndex);
+      var unaddedPokemon = savedPokemon.slice(sliceIndex);
 
       unaddedPokemon.map(number => {
-        const carouselItem = ons.createElement(`
+        var carouselItem = ons.createElement(`
           <ons-carousel-item>
             <ons-card>
               <img class="gallery-image" src="img/${number}.png" />
@@ -117,7 +117,7 @@ $(document).on('show', function({ target }) {
 
 //--- Pokemon API ---
 function appendPokemon(pokenumber, name) {
-  //const list = document.querySelector('#pokemon-list');
+  //var list = document.querySelector('#pokemon-list');
   var list = $('#pokemon-list')[0];
   var newElement = '<ons-list-item expandable>';
   newElement += pokenumber + ' ' + name;
@@ -134,11 +134,11 @@ function appendPokemon(pokenumber, name) {
 $(document).on('init', function({ target }) {
   if (target.matches('#pokemon')) {
     // local storage keys
-    const URL = 'pokemon__url';
-    const PREFIX = 'pokemon__';
+    var URL = 'pokemon__url';
+    var PREFIX = 'pokemon__';
 
-    let nextPokenumber = 1;
-    let storedPokemon;
+    var nextPokenumber = 1;
+    var storedPokemon;
 
     while (
       (storedPokemon = localStorage.getItem(PREFIX + nextPokenumber)) !== null
@@ -160,17 +160,17 @@ $(document).on('init', function({ target }) {
 
     async function get() {
       // do the API call and get JSON response
-      const response = await fetch(localStorage.getItem(URL));
-      const json = await response.json();
+      var response = await fetch(localStorage.getItem(URL));
+      var json = await response.json();
 
-      const newPokemon = json.results.map(e => e.name);
+      var newPokemon = json.results.map(e => e.name);
 
-      //const list = document.querySelector('#pokemon-list');
+      //var list = document.querySelector('#pokemon-list');
       var list = $('#pokemon-list')[0];
       newPokemon.forEach((name, i) => {
         appendPokemon(nextPokenumber, name);
 
-        const key = PREFIX + nextPokenumber;
+        var key = PREFIX + nextPokenumber;
         console.log('Storing ' + name + 'as' + key);
         localStorage.setItem(key, name);
         nextPokenumber++;
@@ -201,7 +201,7 @@ $(document).on('init', function({ target }) {
 });
 
 //--- called from index.html splitter side menu ---
-const clearLocalStorage = () => {
+function clearLocalStorage() {
   localStorage.clear();
   ons.notification.alert('Cleared local storage');
-};
+}
