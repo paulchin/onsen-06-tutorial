@@ -100,7 +100,7 @@ $(document).on('show', function(event) {
       // if there are unadded pokemon, -ve sliceIndex means extract last element of savedPokemon.
       var unaddedPokemon = savedPokemon.slice(sliceIndex);
 
-      unaddedPokemon.map(number => {
+      unaddedPokemon.map(function(number) {
         var carouselItem = ons.createElement(`
           <ons-carousel-item>
             <ons-card>
