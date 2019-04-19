@@ -47,8 +47,11 @@ function addPokemonToGrid(pokenumber) {
   var grid = $('#grid')[0];
 
   //create a new div element
+  // var obj = {
+  //   data: { pokenumber, savedPokemon }
+  // };
   var obj = {
-    data: { pokenumber, savedPokemon }
+    data: { pokenumber: pokenumber, savedPokemon: savedPokemon }
   };
   var cell = $('<div>').on('click', function() {
     $('#navigator')[0].bringPageTop('gallery.html', obj);
