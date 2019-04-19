@@ -47,18 +47,18 @@ function addPokemonToGrid(pokenumber) {
   var grid = $('#grid')[0];
 
   //create a new div element
-  var cell = $('<div>').on('click', function() {
-    $('#navigator')[0].bringPageTop('gallery.html', {
-      data: { pokenumber, savedPokemon }
-    });
-  })[0];
-
-  //--- works as well ---
-  // var cell = $('<div>').click(function() {
+  // var cell = $('<div>').on('click', function() {
   //   $('#navigator')[0].bringPageTop('gallery.html', {
   //     data: { pokenumber, savedPokemon }
   //   });
   // })[0];
+
+  //--- works as well ---
+  var cell = $('<div>').click(function() {
+    $('#navigator')[0].bringPageTop('gallery.html', {
+      data: { pokenumber, savedPokemon }
+    });
+  })[0];
 
   var imgsrc = 'img/' + pokenumber + '.png';
   var image = $('<img>', { src: imgsrc })[0]; //--create new image
