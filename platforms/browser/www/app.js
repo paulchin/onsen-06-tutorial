@@ -74,18 +74,18 @@ function savePokemon(pokenumber, button) {
 //--- to catch the show event from gallery.html ---
 $(document).on('show', function({ target }) {
   if (target.matches('#gallery')) {
-    const { pokenumber, savedPokemon } = document.querySelector(
-      '#navigator'
-    ).topPage.data;
+    var { pokenumber, savedPokemon } = $('#navigator')[0].topPage.data;
 
-    const carousel = document.querySelector('#carousel');
+    //const carousel = document.querySelector('#carousel');
+    var carousel = $('#carousel');
 
     // figure out what new pokemon have been saved since we last showed the gallery
     // this way we don't accidentally add the same pokemon twice
+    // -ve sliceIndex means extract from the end of the array
     const sliceIndex = carousel.itemCount - savedPokemon.length;
 
     if (sliceIndex !== 0) {
-      // if there are unadded pokemon
+      // if there are unadded pokemon, -ve sliceIndex means extract last element of savedPokemon.
       const unaddedPokemon = savedPokemon.slice(sliceIndex);
 
       unaddedPokemon.map(number => {
@@ -97,11 +97,104 @@ $(document).on('show', function({ target }) {
           </ons-carousel-item>
         `);
 
-        carousel.appendChild(carouselItem);
+        carousel.append(carouselItem);
       });
     }
 
     // go to the selected pokemon
-    carousel.setActiveIndex(savedPokemon.indexOf(pokenumber));
+    carousel[0].setActiveIndex(savedPokemon.indexOf(pokenumber));
+    //--- also works ---
+    //$('#carousel')[0].setActiveIndex(savedPokemon.indexOf(pokenumber));
   }
 });
+
+//--- Pokemon API ---
+function appendPokemon(pokenumber, name) {
+  //const list = document.querySelector('#pokemon-list');
+  var list = $('#pokemon-list')[0];
+  var newElement = '<ons-list-item expandable>';
+  newElement += pokenumber + ' ' + name;
+  newElement += ' <div class="expandable-content">';
+  newElement += '<ons-button onclick="savePokemon(';
+  newElement += pokenumber;
+  newElement += ', this)">Save</ons-button>';
+  newElement += ' </div>';
+  newElement += '</ons-list-item>';
+
+  list.append(ons.createElement(newElement));
+}
+
+$(document).on('init', function({ target }) {
+  if (target.matches('#pokemon')) {
+    // local storage keys
+    const URL = 'pokemon__url';
+    const PREFIX = 'pokemon__';
+
+    let nextPokenumber = 1;
+    let storedPokemon;
+
+    while (
+      (storedPokemon = localStorage.getItem(PREFIX + nextPokenumber)) !== null
+    ) {
+      var msg =
+        'got ' +
+        storedPokemon +
+        'from local with key' +
+        PREFIX +
+        nextPokenumber;
+      console.log(msg);
+      appendPokemon(nextPokenumber, storedPokemon);
+      nextPokenumber++;
+    }
+
+    if (!localStorage.getItem(URL)) {
+      localStorage.setItem(URL, 'https://pokeapi.co/api/v2/pokemon');
+    }
+
+    async function get() {
+      // do the API call and get JSON response
+      const response = await fetch(localStorage.getItem(URL));
+      const json = await response.json();
+
+      const newPokemon = json.results.map(e => e.name);
+
+      //const list = document.querySelector('#pokemon-list');
+      var list = $('#pokemon-list')[0];
+      newPokemon.forEach((name, i) => {
+        appendPokemon(nextPokenumber, name);
+
+        const key = PREFIX + nextPokenumber;
+        console.log('Storing ' + name + 'as' + key);
+        localStorage.setItem(key, name);
+        nextPokenumber++;
+      });
+
+      localStorage.setItem(URL, json.next);
+
+      // hide the spinner when all the pages have been loaded
+      if (!localStorage.getItem(URL)) {
+        //document.querySelector('#after-list').style.display = 'none';
+        $('#after-list').css('display', 'none');
+      }
+    }
+
+    // get the first set of results as soon as the page is initialised
+    get();
+
+    // at the bottom of the list get the next set of results and append them
+    target.onInfiniteScroll = done => {
+      if (localStorage.getItem(URL)) {
+        setTimeout(() => {
+          get();
+          done();
+        }, 200);
+      }
+    };
+  }
+});
+
+//--- called from index.html splitter side menu ---
+const clearLocalStorage = () => {
+  localStorage.clear();
+  ons.notification.alert('Cleared local storage');
+};

@@ -109,71 +109,36 @@ $(document).on('show', function({ target }) {
 });
 
 //--- Pokemon API ---
-function appendPokemon(pokenumber, name) {
-  //const list = document.querySelector('#pokemon-list');
-  var list = $('#pokemon-list')[0];
-  var newElement = '<ons-list-item expandable>';
-  newElement += pokenumber + ' ' + name;
-  newElement += ' <div class="expandable-content">';
-  newElement += '<ons-button onclick="savePokemon(';
-  newElement += pokenumber;
-  newElement += ', this)">Save</ons-button>';
-  newElement += ' </div>';
-  newElement += '</ons-list-item>';
-
-  list.append(ons.createElement(newElement));
-}
-
 $(document).on('init', function({ target }) {
   if (target.matches('#pokemon')) {
-    // local storage keys
-    const URL = 'pokemon__url';
-    const PREFIX = 'pokemon__';
-
-    let nextPokenumber = 1;
-    let storedPokemon;
-
-    while (
-      (storedPokemon = localStorage.getItem(PREFIX + nextPokenumber)) !== null
-    ) {
-      var msg =
-        'got ' +
-        storedPokemon +
-        'from local with key' +
-        PREFIX +
-        nextPokenumber;
-      console.log(msg);
-      appendPokemon(nextPokenumber, storedPokemon);
-      nextPokenumber++;
-    }
-
-    if (!localStorage.getItem(URL)) {
-      localStorage.setItem(URL, 'https://pokeapi.co/api/v2/pokemon');
-    }
+    let url = 'https://pokeapi.co/api/v2/pokemon';
+    let nextPokenumber = 1; // use to keep track of the Pokémon numbers
 
     async function get() {
       // do the API call and get JSON response
-      const response = await fetch(localStorage.getItem(URL));
+      const response = await fetch(url);
       const json = await response.json();
 
       const newPokemon = json.results.map(e => e.name);
 
-      //const list = document.querySelector('#pokemon-list');
       var list = $('#pokemon-list')[0];
-      newPokemon.forEach((name, i) => {
-        appendPokemon(nextPokenumber, name);
-
-        const key = PREFIX + nextPokenumber;
-        console.log('Storing ' + name + 'as' + key);
-        localStorage.setItem(key, name);
+      newPokemon.forEach(name => {
+        var newElement = ' <ons-list-item expandable>';
+        newElement += nextPokenumber + ' ' + name;
+        newElement += ' <div class="expandable-content">';
+        newElement += '<ons-button onclick="savePokemon(';
+        newElement += nextPokenumber;
+        newElement += ', this)">Save</ons-button>';
+        newElement += ' </div>';
+        newElement += '</ons-list-item>';
+        list.append(ons.createElement(newElement));
         nextPokenumber++;
       });
 
-      localStorage.setItem(URL, json.next);
+      url = json.next;
 
       // hide the spinner when all the pages have been loaded
-      if (!localStorage.getItem(URL)) {
-        //document.querySelector('#after-list').style.display = 'none';
+      if (!url) {
         $('#after-list').css('display', 'none');
       }
     }
@@ -183,7 +148,7 @@ $(document).on('init', function({ target }) {
 
     // at the bottom of the list get the next set of results and append them
     target.onInfiniteScroll = done => {
-      if (localStorage.getItem(URL)) {
+      if (url) {
         setTimeout(() => {
           get();
           done();
@@ -192,9 +157,3 @@ $(document).on('init', function({ target }) {
     };
   }
 });
-
-//--- called from index.html splitter side menu ---
-const clearLocalStorage = () => {
-  localStorage.clear();
-  ons.notification.alert('Cleared local storage');
-};
