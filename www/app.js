@@ -23,11 +23,18 @@ function loadPage(page) {
 }
 
 //--- called from home.html to change toolbar title of save.html ---
-document.addEventListener('prechange', ({ target, tabItem }) => {
-  if (target.matches('#tabbar')) {
-    $('#home-toolbar .center').html(tabItem.getAttribute('label'));
+document.addEventListener('prechange', function(event) {
+  if (event.target.matches('#tabbar')) {
+    $('#home-toolbar .center').html(event.tabItem.getAttribute('label'));
   }
 });
+
+//--- below fails on nox player ---
+// document.addEventListener('prechange', function({ target, tabItem }) {
+//   if (target.matches('#tabbar')) {
+//     $('#home-toolbar .center').html(tabItem.getAttribute('label'));
+//   }
+// });
 
 //--- called from pokemon.html ---
 let savedPokemon = [];
