@@ -23,14 +23,7 @@ function loadPage(page) {
 }
 
 //--- called from home.html to change toolbar title of save.html ---
-// document.addEventListener('prechange', function({ target, tabItem }) {
-//   if (target.matches('#tabbar')) {
-//     $('#home-toolbar .center').html(tabItem.getAttribute('label'));
-//   }
-// });
-
-//--- called from home.html to change toolbar title of save.html ---
-$(document).on('prechange', function({ target, tabItem }) {
+document.addEventListener('prechange', function({ target, tabItem }) {
   if (target.matches('#tabbar')) {
     $('#home-toolbar .center').html(tabItem.getAttribute('label'));
   }
