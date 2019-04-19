@@ -83,8 +83,8 @@ function savePokemon(pokenumber, button) {
 }
 
 //--- to catch the show event from gallery.html ---
-$(document).on('show', function({ target }) {
-  if (target.matches('#gallery')) {
+$(document).on('show', function(event) {
+  if (event.target.matches('#gallery')) {
     var { pokenumber, savedPokemon } = $('#navigator')[0].topPage.data;
 
     //var carousel = document.querySelector('#carousel');
