@@ -21,7 +21,7 @@ xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <plugin name="cordova-plugin-whitelist" spec="~1.2.0" />
     <plugin name="cordova-plugin-console" spec="~1.0.1" />
     <plugin name="cordova-plugin-statusbar" spec="~1.0.1" />
-    <plugin name="com.vladstirbu.cordova.promise" spec="1.0.0" source="pgb" />
+    <plugin name="com.vladstirbu.cordova.promise" source="pgb" />
    
     <preference name="orientation" value="portrait" />
     <preference name="android-build-tool" value="gradle" /> 
