@@ -77,9 +77,13 @@ function addPokemonToGrid(pokenumber) {
 
 //--- called from pokemon.html ---
 function savePokemon(pokenumber, button) {
-  addPokemonToGrid(pokenumber);
-  //looks for its parent ons-list-item
-  button.closest('ons-list-item').hideExpansion();
+  try {
+    addPokemonToGrid(pokenumber);
+    //looks for its parent ons-list-item
+    button.closest('ons-list-item').hideExpansion();
+  } catch (error) {
+    ons.notification.alert(error);
+  }
 }
 
 //--- to catch the show event from gallery.html ---
