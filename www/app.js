@@ -71,6 +71,8 @@ function addPokemonToGrid(pokenumber) {
   //var image = $('<img>').attr('src', `img/${pokenumber}.png`)[0];
   //--------------- debug half -----------------------------------
   try {
+    ons.notification.alert('cell: ' + cell);
+
     cell.append(image);
   } catch (error) {
     ons.notification.alert(error);
