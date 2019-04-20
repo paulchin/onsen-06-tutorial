@@ -40,23 +40,28 @@ document.addEventListener('prechange', function(event) {
 var savedPokemon = [];
 
 function addPokemonToGrid(pokenumber) {
-  // we save a list so we can pass it to the gallery
-  savedPokemon.push(pokenumber);
+  try {
+    // we save a list so we can pass it to the gallery
+    savedPokemon.push(pokenumber);
 
-  // now add the new pokemon to the grid in saved.html
-  var grid = $('#grid')[0];
+    // now add the new pokemon to the grid in saved.html
+    var grid = $('#grid')[0];
 
-  //create a new div element
-  // var obj = {
-  //   data: { pokenumber, savedPokemon }
-  // };
-  var obj = {
-    data: { pokenumber: pokenumber, savedPokemon: savedPokemon }
-  };
-  var cell = $('<div>').on('click', function() {
-    $('#navigator')[0].bringPageTop('gallery.html', obj);
-  })[0];
+    //create a new div element
+    // var obj = {
+    //   data: { pokenumber, savedPokemon }
+    // };
+    var obj = {
+      data: { pokenumber: pokenumber, savedPokemon: savedPokemon }
+    };
+    var cell = $('<div>').on('click', function() {
+      $('#navigator')[0].bringPageTop('gallery.html', obj);
+    })[0];
+  } catch (error) {
+    ons.notification.alert(error);
+  }
 
+  //--------------- debug half -----------------------------------
   //--- works as well ---
   // var cell = $('<div>').click(function() {
   //   $('#navigator')[0].bringPageTop('gallery.html', {
@@ -77,13 +82,9 @@ function addPokemonToGrid(pokenumber) {
 
 //--- called from pokemon.html ---
 function savePokemon(pokenumber, button) {
-  try {
-    addPokemonToGrid(pokenumber);
-    //looks for its parent ons-list-item
-    //button.closest('ons-list-item').hideExpansion();
-  } catch (error) {
-    ons.notification.alert(error);
-  }
+  addPokemonToGrid(pokenumber);
+  //looks for its parent ons-list-item
+  button.closest('ons-list-item').hideExpansion();
 }
 
 //--- to catch the show event from gallery.html ---
