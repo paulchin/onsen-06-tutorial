@@ -40,26 +40,22 @@ document.addEventListener('prechange', function(event) {
 var savedPokemon = [];
 
 function addPokemonToGrid(pokenumber) {
-  try {
-    // we save a list so we can pass it to the gallery
-    savedPokemon.push(pokenumber);
+  // we save a list so we can pass it to the gallery
+  savedPokemon.push(pokenumber);
 
-    // now add the new pokemon to the grid in saved.html
-    var grid = $('#grid')[0];
+  // now add the new pokemon to the grid in saved.html
+  var grid = $('#grid')[0];
 
-    //create a new div element
-    // var obj = {
-    //   data: { pokenumber, savedPokemon }
-    // };
-    var obj = {
-      data: { pokenumber: pokenumber, savedPokemon: savedPokemon }
-    };
-    var cell = $('<div>').on('click', function() {
-      $('#navigator')[0].bringPageTop('gallery.html', obj);
-    })[0];
-  } catch (error) {
-    ons.notification.alert(error);
-  }
+  //create a new div element
+  // var obj = {
+  //   data: { pokenumber, savedPokemon }
+  // };
+  var obj = {
+    data: { pokenumber: pokenumber, savedPokemon: savedPokemon }
+  };
+  var cell = $('<div>').on('click', function() {
+    $('#navigator')[0].bringPageTop('gallery.html', obj);
+  })[0];
 
   //--------------- debug half -----------------------------------
   //--- works as well ---
@@ -68,16 +64,19 @@ function addPokemonToGrid(pokenumber) {
   //     data: { pokenumber, savedPokemon }
   //   });
   // })[0];
+  try {
+    var imgsrc = 'img/' + pokenumber + '.png';
+    var image = $('<img>', { src: imgsrc })[0]; //--create new image
 
-  var imgsrc = 'img/' + pokenumber + '.png';
-  var image = $('<img>', { src: imgsrc })[0]; //--create new image
+    //--- works as well ---
+    //var image = $('<img>').attr('src', `img/${pokenumber}.png`)[0];
 
-  //--- works as well ---
-  //var image = $('<img>').attr('src', `img/${pokenumber}.png`)[0];
+    cell.append(image);
 
-  cell.append(image);
-
-  grid.append(cell);
+    grid.append(cell);
+  } catch (error) {
+    ons.notification.alert(error);
+  }
 }
 
 //--- called from pokemon.html ---
