@@ -21,5 +21,18 @@
     <p>
       <ons-button onclick="login()">Sign in</ons-button>
     </p>
+    <script>
+      function login() {
+        var username = $('#username').val();
+        var password = $('#password').val();
+
+        if (username === '' && password === '') {
+          var navigator = $('#navigator')[0];
+          navigator.resetToPage('home.html');
+        } else {
+          ons.notification.toast('Wrong', { timeout: 1000 });
+        }
+      }
+    </script>
   </div>
 </ons-page>

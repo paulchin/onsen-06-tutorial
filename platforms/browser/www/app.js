@@ -1,15 +1,15 @@
 //--- called from login.html ---
-function login() {
-  var username = $('#username').val();
-  var password = $('#password').val();
+// function login() {
+//   var username = $('#username').val();
+//   var password = $('#password').val();
 
-  if (username === '' && password === '') {
-    var navigator = $('#navigator')[0];
-    navigator.resetToPage('home.html');
-  } else {
-    ons.notification.toast('Wrong', { timeout: 1000 });
-  }
-}
+//   if (username === '' && password === '') {
+//     var navigator = $('#navigator')[0];
+//     navigator.resetToPage('home.html');
+//   } else {
+//     ons.notification.toast('Wrong', { timeout: 1000 });
+//   }
+// }
 
 //--- called from home.html ---
 function openMenu() {
