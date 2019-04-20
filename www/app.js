@@ -197,6 +197,7 @@ $(document).on('init', function(event) {
           }
         })
         .fail(function() {
+          ons.notification.alert('ajax localstorage fail..');
           console.log('ajax localStorage fail...');
         });
     }
