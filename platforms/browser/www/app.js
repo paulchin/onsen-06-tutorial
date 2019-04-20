@@ -73,6 +73,7 @@ function addPokemonToGrid(pokenumber) {
   try {
     ons.notification.alert('typeof image: ' + typeof image);
     ons.notification.alert('typeof cell: ' + typeof cell);
+    ons.notification.alert('cell: ' + cell);
     cell.append(image);
   } catch (error) {
     ons.notification.alert(error);
