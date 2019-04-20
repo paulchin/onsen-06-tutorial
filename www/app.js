@@ -67,16 +67,16 @@ function addPokemonToGrid(pokenumber) {
   try {
     var imgsrc = 'img/' + pokenumber + '.png';
     var image = $('<img>', { src: imgsrc })[0]; //--create new image
-
-    //--- works as well ---
-    //var image = $('<img>').attr('src', `img/${pokenumber}.png`)[0];
-
-    cell.append(image);
-
-    grid.append(cell);
   } catch (error) {
     ons.notification.alert(error);
   }
+
+  //--- works as well ---
+  //var image = $('<img>').attr('src', `img/${pokenumber}.png`)[0];
+  //--------------- debug half -----------------------------------
+  cell.append(image);
+
+  grid.append(cell);
 }
 
 //--- called from pokemon.html ---
