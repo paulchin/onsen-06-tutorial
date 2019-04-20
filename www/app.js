@@ -140,8 +140,8 @@ function appendPokemon(pokenumber, name) {
 //--- when pokemon.html loads ---
 $(document).on('init', function(event) {
   if (event.target.matches('#pokemon')) {
-    let url = 'https://pokeapi.co/api/v2/pokemon';
-    let nextPokenumber = 1; // use to keep track of the Pokémon numbers
+    var url = 'https://pokeapi.co/api/v2/pokemon';
+    var nextPokenumber = 1; // use to keep track of the Pokémon numbers
 
     function get() {
       var json;
@@ -156,16 +156,16 @@ $(document).on('init', function(event) {
 
           const list = document.querySelector('#pokemon-list');
           newPokemon.forEach(function(name) {
-            list.appendChild(
-              ons.createElement(`
-          <ons-list-item expandable>
-            ${nextPokenumber} ${name}
-            <div class="expandable-content">
-              <ons-button onclick="savePokemon(${nextPokenumber}, this)">Save</ons-button>
-            </div>
-          </ons-list-item>
-        `)
-            );
+            var newElement = ' <ons-list-item expandable>';
+            newElement += nextPokenumber + ' ' + name;
+            newElement += ' <div class="expandable-content">';
+            newElement += '<ons-button onclick="savePokemon(';
+            newElement += nextPokenumber;
+            newElement += ', this)">Save</ons-button>';
+            newElement += '</div>';
+            newElement += '</ons-list-item>';
+
+            list.appendChild(ons.createElement(newElement));
             nextPokenumber++;
           });
 
@@ -186,9 +186,9 @@ $(document).on('init', function(event) {
     get();
 
     // at the bottom of the list get the next set of results and append them
-    event.target.onInfiniteScroll = done => {
+    event.target.onInfiniteScroll = function(done) {
       if (url) {
-        setTimeout(() => {
+        setTimeout(function() {
           get();
           done();
         }, 200);
