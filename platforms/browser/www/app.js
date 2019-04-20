@@ -57,7 +57,6 @@ function addPokemonToGrid(pokenumber) {
     $('#navigator')[0].bringPageTop('gallery.html', obj);
   })[0];
 
-  //--------------- debug half -----------------------------------
   //--- works as well ---
   // var cell = $('<div>').click(function() {
   //   $('#navigator')[0].bringPageTop('gallery.html', {
@@ -69,12 +68,9 @@ function addPokemonToGrid(pokenumber) {
 
   //--- works as well ---
   //var image = $('<img>').attr('src', `img/${pokenumber}.png`)[0];
-  //--------------- debug half -----------------------------------
+
   try {
-    ons.notification.alert('typeof image: ' + typeof image);
-    ons.notification.alert('typeof cell: ' + typeof cell);
-    ons.notification.alert('cell: ' + cell);
-    cell.appendChild(image);
+    cell.append(image); // throws undefined error why?
   } catch (error) {
     ons.notification.alert(error);
   }
