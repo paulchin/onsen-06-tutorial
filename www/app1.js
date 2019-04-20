@@ -1,20 +1,20 @@
 //--- called from login.html ---
-function login() {
-  var username = $('#username').val();
-  var password = $('#password').val();
+// function login() {
+//   var username = $('#username').val();
+//   var password = $('#password').val();
 
-  if (username === '' && password === '') {
-    var navigator = $('#navigator')[0];
-    navigator.resetToPage('home.html');
-  } else {
-    ons.notification.toast('Wrong', { timeout: 1000 });
-  }
-}
+//   if (username === '' && password === '') {
+//     var navigator = $('#navigator')[0];
+//     navigator.resetToPage('home.html');
+//   } else {
+//     ons.notification.toast('Wrong', { timeout: 1000 });
+//   }
+// }
 
 //--- called from home.html ---
-function openMenu() {
-  $('#menu')[0].open();
-}
+// function openMenu() {
+//   $('#menu')[0].open();
+// }
 
 //--- called from index.html spliter ---
 function loadPage(page) {
@@ -23,14 +23,21 @@ function loadPage(page) {
 }
 
 //--- called from home.html to change toolbar title of save.html ---
-document.addEventListener('prechange', function({ target, tabItem }) {
-  if (target.matches('#tabbar')) {
-    $('#home-toolbar .center').html(tabItem.getAttribute('label'));
+document.addEventListener('prechange', function(event) {
+  if (event.target.matches('#tabbar')) {
+    $('#home-toolbar .center').html(event.tabItem.getAttribute('label'));
   }
 });
 
+//--- below fails on nox player ---
+// document.addEventListener('prechange', function({ target, tabItem }) {
+//   if (target.matches('#tabbar')) {
+//     $('#home-toolbar .center').html(tabItem.getAttribute('label'));
+//   }
+// });
+
 //--- called from pokemon.html ---
-let savedPokemon = [];
+var savedPokemon = [];
 
 function addPokemonToGrid(pokenumber) {
   // we save a list so we can pass it to the gallery
@@ -40,10 +47,14 @@ function addPokemonToGrid(pokenumber) {
   var grid = $('#grid')[0];
 
   //create a new div element
+  // var obj = {
+  //   data: { pokenumber, savedPokemon }
+  // };
+  var obj = {
+    data: { pokenumber: pokenumber, savedPokemon: savedPokemon }
+  };
   var cell = $('<div>').on('click', function() {
-    $('#navigator')[0].bringPageTop('gallery.html', {
-      data: { pokenumber, savedPokemon }
-    });
+    $('#navigator')[0].bringPageTop('gallery.html', obj);
   })[0];
 
   //--- works as well ---
@@ -72,30 +83,32 @@ function savePokemon(pokenumber, button) {
 }
 
 //--- to catch the show event from gallery.html ---
-$(document).on('show', function({ target }) {
-  if (target.matches('#gallery')) {
-    var { pokenumber, savedPokemon } = $('#navigator')[0].topPage.data;
+$(document).on('show', function(event) {
+  if (event.target.matches('#gallery')) {
+    var pokenumber = $('#navigator')[0].topPage.data.pokenumber;
+    var savedPokemon = $('#navigator')[0].topPage.data.savedPokemon;
 
-    //const carousel = document.querySelector('#carousel');
+    //var carousel = document.querySelector('#carousel');
     var carousel = $('#carousel');
 
     // figure out what new pokemon have been saved since we last showed the gallery
     // this way we don't accidentally add the same pokemon twice
     // -ve sliceIndex means extract from the end of the array
-    const sliceIndex = carousel.itemCount - savedPokemon.length;
+    var sliceIndex = carousel.itemCount - savedPokemon.length;
 
     if (sliceIndex !== 0) {
       // if there are unadded pokemon, -ve sliceIndex means extract last element of savedPokemon.
-      const unaddedPokemon = savedPokemon.slice(sliceIndex);
+      var unaddedPokemon = savedPokemon.slice(sliceIndex);
 
-      unaddedPokemon.map(number => {
-        const carouselItem = ons.createElement(`
-          <ons-carousel-item>
-            <ons-card>
-              <img class="gallery-image" src="img/${number}.png" />
-            </ons-card>
-          </ons-carousel-item>
-        `);
+      unaddedPokemon.map(function(number) {
+        var newItem = '<ons-carousel-item>';
+        newItem += '<ons-card>';
+        newItem += '<img class="gallery-image" src="img/';
+        newItem += number;
+        newItem += '.png" />';
+        newItem += '</ons-card>';
+        newItem += ' </ons-carousel-item>';
+        var carouselItem = ons.createElement(newItem);
 
         carousel.append(carouselItem);
       });
@@ -109,36 +122,71 @@ $(document).on('show', function({ target }) {
 });
 
 //--- Pokemon API ---
-$(document).on('init', function({ target }) {
-  if (target.matches('#pokemon')) {
-    let url = 'https://pokeapi.co/api/v2/pokemon';
-    let nextPokenumber = 1; // use to keep track of the Pokémon numbers
+function appendPokemon(pokenumber, name) {
+  //var list = document.querySelector('#pokemon-list');
+  var list = $('#pokemon-list')[0];
+  var newElement = '<ons-list-item expandable>';
+  newElement += pokenumber + ' ' + name;
+  newElement += ' <div class="expandable-content">';
+  newElement += '<ons-button onclick="savePokemon(';
+  newElement += pokenumber;
+  newElement += ', this)">Save</ons-button>';
+  newElement += ' </div>';
+  newElement += '</ons-list-item>';
+
+  list.append(ons.createElement(newElement));
+}
+
+$(document).on('init', function(event) {
+  if (event.target.matches('#pokemon')) {
+    // local storage keys
+    var URL = 'pokemon__url';
+    var PREFIX = 'pokemon__';
+
+    var nextPokenumber = 1;
+    var storedPokemon;
+
+    while (
+      (storedPokemon = localStorage.getItem(PREFIX + nextPokenumber)) !== null
+    ) {
+      var msg =
+        'got ' +
+        storedPokemon +
+        'from local with key' +
+        PREFIX +
+        nextPokenumber;
+      console.log(msg);
+      appendPokemon(nextPokenumber, storedPokemon);
+      nextPokenumber++;
+    }
+
+    if (!localStorage.getItem(URL)) {
+      localStorage.setItem(URL, 'https://pokeapi.co/api/v2/pokemon');
+    }
 
     async function get() {
       // do the API call and get JSON response
-      const response = await fetch(url);
-      const json = await response.json();
+      var response = await fetch(localStorage.getItem(URL));
+      var json = await response.json();
 
-      const newPokemon = json.results.map(e => e.name);
+      var newPokemon = json.results.map(e => e.name);
 
+      //var list = document.querySelector('#pokemon-list');
       var list = $('#pokemon-list')[0];
-      newPokemon.forEach(name => {
-        var newElement = ' <ons-list-item expandable>';
-        newElement += nextPokenumber + ' ' + name;
-        newElement += ' <div class="expandable-content">';
-        newElement += '<ons-button onclick="savePokemon(';
-        newElement += nextPokenumber;
-        newElement += ', this)">Save</ons-button>';
-        newElement += ' </div>';
-        newElement += '</ons-list-item>';
-        list.append(ons.createElement(newElement));
+      newPokemon.forEach((name, i) => {
+        appendPokemon(nextPokenumber, name);
+
+        var key = PREFIX + nextPokenumber;
+        console.log('Storing ' + name + 'as' + key);
+        localStorage.setItem(key, name);
         nextPokenumber++;
       });
 
-      url = json.next;
+      localStorage.setItem(URL, json.next);
 
       // hide the spinner when all the pages have been loaded
-      if (!url) {
+      if (!localStorage.getItem(URL)) {
+        //document.querySelector('#after-list').style.display = 'none';
         $('#after-list').css('display', 'none');
       }
     }
@@ -147,8 +195,8 @@ $(document).on('init', function({ target }) {
     get();
 
     // at the bottom of the list get the next set of results and append them
-    target.onInfiniteScroll = done => {
-      if (url) {
+    event.target.onInfiniteScroll = done => {
+      if (localStorage.getItem(URL)) {
         setTimeout(() => {
           get();
           done();
@@ -157,3 +205,9 @@ $(document).on('init', function({ target }) {
     };
   }
 });
+
+//--- called from index.html splitter side menu ---
+function clearLocalStorage() {
+  localStorage.clear();
+  ons.notification.alert('Cleared local storage');
+}

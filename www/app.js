@@ -164,31 +164,36 @@ $(document).on('init', function(event) {
       localStorage.setItem(URL, 'https://pokeapi.co/api/v2/pokemon');
     }
 
-    async function get() {
+    function get() {
       // do the API call and get JSON response
-      var response = await fetch(localStorage.getItem(URL));
-      var json = await response.json();
+      // var response = await fetch(localStorage.getItem(URL));
+      // var json = await response.json();
+      var json;
 
-      var newPokemon = json.results.map(e => e.name);
+      $.ajax(localStorage.getItem(URL))
+        .done(function() {
+          json = response.json();
+          var newPokemon = json.results.map(e => e.name);
+          var list = $('#pokemon-list')[0];
+          newPokemon.forEach((name, i) => {
+            appendPokemon(nextPokenumber, name);
 
-      //var list = document.querySelector('#pokemon-list');
-      var list = $('#pokemon-list')[0];
-      newPokemon.forEach((name, i) => {
-        appendPokemon(nextPokenumber, name);
+            var key = PREFIX + nextPokenumber;
+            console.log('Storing ' + name + 'as' + key);
+            localStorage.setItem(key, name);
+            nextPokenumber++;
+          });
 
-        var key = PREFIX + nextPokenumber;
-        console.log('Storing ' + name + 'as' + key);
-        localStorage.setItem(key, name);
-        nextPokenumber++;
-      });
+          localStorage.setItem(URL, json.next);
 
-      localStorage.setItem(URL, json.next);
-
-      // hide the spinner when all the pages have been loaded
-      if (!localStorage.getItem(URL)) {
-        //document.querySelector('#after-list').style.display = 'none';
-        $('#after-list').css('display', 'none');
-      }
+          // hide the spinner when all the pages have been loaded
+          if (!localStorage.getItem(URL)) {
+            $('#after-list').css('display', 'none');
+          }
+        })
+        .fail(function() {
+          console.log('ajax localStorage fail...');
+        });
     }
 
     // get the first set of results as soon as the page is initialised
