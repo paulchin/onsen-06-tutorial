@@ -140,65 +140,45 @@ function appendPokemon(pokenumber, name) {
 //--- when pokemon.html loads ---
 $(document).on('init', function(event) {
   if (event.target.matches('#pokemon')) {
-    // local storage keys
-    var URL = 'pokemon__url';
-    var PREFIX = 'pokemon__';
-
-    var nextPokenumber = 1;
-    var storedPokemon;
-
-    while (
-      (storedPokemon = localStorage.getItem(PREFIX + nextPokenumber)) !== null
-    ) {
-      var msg =
-        'got ' +
-        storedPokemon +
-        'from local with key' +
-        PREFIX +
-        nextPokenumber;
-      console.log(msg);
-      appendPokemon(nextPokenumber, storedPokemon);
-      nextPokenumber++;
-    }
-
-    if (!localStorage.getItem(URL)) {
-      localStorage.setItem(URL, 'https://pokeapi.co/api/v2/pokemon');
-    }
+    let url = 'https://pokeapi.co/api/v2/pokemon';
+    let nextPokenumber = 1; // use to keep track of the Pokémon numbers
 
     function get() {
-      // do the API call and get JSON response
-      // var response = await fetch(localStorage.getItem(URL));
-      // var json = await response.json();
       var json;
 
-      $.ajax(localStorage.getItem(URL))
+      // do the API call and get JSON response
+      $.ajax(url)
         .done(function(response) {
-          // json = response.json();
-          //console.log('... ' + response);
           json = response;
-          var newPokemon = json.results.map(function(e) {
+          const newPokemon = json.results.map(function(e) {
             return e.name;
           });
-          var list = $('#pokemon-list')[0];
-          newPokemon.forEach(function(name, i) {
-            appendPokemon(nextPokenumber, name);
 
-            var key = PREFIX + nextPokenumber;
-            console.log('Storing ' + name + 'as' + key);
-            localStorage.setItem(key, name);
+          const list = document.querySelector('#pokemon-list');
+          newPokemon.forEach(function(name) {
+            list.appendChild(
+              ons.createElement(`
+          <ons-list-item expandable>
+            ${nextPokenumber} ${name}
+            <div class="expandable-content">
+              <ons-button onclick="savePokemon(${nextPokenumber}, this)">Save</ons-button>
+            </div>
+          </ons-list-item>
+        `)
+            );
             nextPokenumber++;
           });
 
-          localStorage.setItem(URL, json.next);
+          url = json.next;
 
           // hide the spinner when all the pages have been loaded
-          if (!localStorage.getItem(URL)) {
-            $('#after-list').css('display', 'none');
+          if (!url) {
+            document.querySelector('#after-list').style.display = 'none';
           }
         })
         .fail(function() {
-          ons.notification.alert('ajax localstorage fail..');
-          console.log('ajax localStorage fail...');
+          ons.notification.alert('ajax get fail..');
+          console.log('ajax get fail...');
         });
     }
 
@@ -206,9 +186,9 @@ $(document).on('init', function(event) {
     get();
 
     // at the bottom of the list get the next set of results and append them
-    event.target.onInfiniteScroll = function(done) {
-      if (localStorage.getItem(URL)) {
-        setTimeout(function() {
+    event.target.onInfiniteScroll = done => {
+      if (url) {
+        setTimeout(() => {
           get();
           done();
         }, 200);
@@ -216,6 +196,85 @@ $(document).on('init', function(event) {
     };
   }
 });
+
+// $(document).on('init', function(event) {
+//   if (event.target.matches('#pokemon')) {
+//     // local storage keys
+//     var URL = 'pokemon__url';
+//     var PREFIX = 'pokemon__';
+
+//     var nextPokenumber = 1;
+//     var storedPokemon;
+
+//     while (
+//       (storedPokemon = localStorage.getItem(PREFIX + nextPokenumber)) !== null
+//     ) {
+//       var msg =
+//         'got ' +
+//         storedPokemon +
+//         'from local with key' +
+//         PREFIX +
+//         nextPokenumber;
+//       console.log(msg);
+//       appendPokemon(nextPokenumber, storedPokemon);
+//       nextPokenumber++;
+//     }
+
+//     if (!localStorage.getItem(URL)) {
+//       localStorage.setItem(URL, 'https://pokeapi.co/api/v2/pokemon');
+//     }
+
+//     function get() {
+//       // do the API call and get JSON response
+//       // var response = await fetch(localStorage.getItem(URL));
+//       // var json = await response.json();
+//       var json;
+
+//       $.ajax(localStorage.getItem(URL))
+//         .done(function(response) {
+//           // json = response.json();
+//           //console.log('... ' + response);
+//           json = response;
+//           var newPokemon = json.results.map(function(e) {
+//             return e.name;
+//           });
+//           var list = $('#pokemon-list')[0];
+//           newPokemon.forEach(function(name, i) {
+//             appendPokemon(nextPokenumber, name);
+
+//             var key = PREFIX + nextPokenumber;
+//             console.log('Storing ' + name + 'as' + key);
+//             localStorage.setItem(key, name);
+//             nextPokenumber++;
+//           });
+
+//           localStorage.setItem(URL, json.next);
+
+//           // hide the spinner when all the pages have been loaded
+//           if (!localStorage.getItem(URL)) {
+//             $('#after-list').css('display', 'none');
+//           }
+//         })
+//         .fail(function() {
+//           ons.notification.alert('ajax localstorage fail..');
+//           console.log('ajax localStorage fail...');
+//         });
+//     }
+
+//     // get the first set of results as soon as the page is initialised
+//     get();
+
+//     // at the bottom of the list get the next set of results and append them
+//     event.target.onInfiniteScroll = function(done) {
+//       if (localStorage.getItem(URL)) {
+//         setTimeout(function() {
+//           get();
+//           done();
+//         }, 200);
+//       }
+//     };
+//   }
+// });
 
 //--- called from index.html splitter side menu ---
 function clearLocalStorage() {
