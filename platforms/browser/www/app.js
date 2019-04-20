@@ -101,13 +101,14 @@ $(document).on('show', function(event) {
       var unaddedPokemon = savedPokemon.slice(sliceIndex);
 
       unaddedPokemon.map(function(number) {
-        var carouselItem = ons.createElement(`
-          <ons-carousel-item>
-            <ons-card>
-              <img class="gallery-image" src="img/${number}.png" />
-            </ons-card>
-          </ons-carousel-item>
-        `);
+        var newItem = '<ons-carousel-item>';
+        newItem += '<ons-card>';
+        newItem += '<img class="gallery-image" src="img/';
+        newItem += number;
+        newItem += '.png" />';
+        newItem += '</ons-card>';
+        newItem += ' </ons-carousel-item>';
+        var carouselItem = ons.createElement(newItem);
 
         carousel.append(carouselItem);
       });
