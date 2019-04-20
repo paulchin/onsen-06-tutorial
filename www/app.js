@@ -171,9 +171,13 @@ $(document).on('init', function(event) {
       var json;
 
       $.ajax(localStorage.getItem(URL))
-        .done(function() {
-          json = response.json();
-          var newPokemon = json.results.map(e => e.name);
+        .done(function(response) {
+          // json = response.json();
+          //console.log('... ' + response);
+          json = response;
+          var newPokemon = json.results.map(function(e) {
+            return e.name;
+          });
           var list = $('#pokemon-list')[0];
           newPokemon.forEach((name, i) => {
             appendPokemon(nextPokenumber, name);
