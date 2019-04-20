@@ -64,17 +64,17 @@ function addPokemonToGrid(pokenumber) {
   //     data: { pokenumber, savedPokemon }
   //   });
   // })[0];
-  try {
-    var imgsrc = 'img/' + pokenumber + '.png';
-    var image = $('<img>', { src: imgsrc })[0]; //--create new image
-  } catch (error) {
-    ons.notification.alert(error);
-  }
+  var imgsrc = 'img/' + pokenumber + '.png';
+  var image = $('<img>', { src: imgsrc })[0]; //--create new image
 
   //--- works as well ---
   //var image = $('<img>').attr('src', `img/${pokenumber}.png`)[0];
   //--------------- debug half -----------------------------------
-  cell.append(image);
+  try {
+    cell.append(image);
+  } catch (error) {
+    ons.notification.alert(error);
+  }
 
   grid.append(cell);
 }
