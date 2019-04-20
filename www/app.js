@@ -12,9 +12,9 @@
 // }
 
 //--- called from home.html ---
-function openMenu() {
-  $('#menu')[0].open();
-}
+// function openMenu() {
+//   $('#menu')[0].open();
+// }
 
 //--- called from index.html spliter ---
 function loadPage(page) {
