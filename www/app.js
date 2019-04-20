@@ -137,8 +137,8 @@ function appendPokemon(pokenumber, name) {
   list.append(ons.createElement(newElement));
 }
 
-$(document).on('init', function({ target }) {
-  if (target.matches('#pokemon')) {
+$(document).on('init', function(event) {
+  if (event.target.matches('#pokemon')) {
     // local storage keys
     var URL = 'pokemon__url';
     var PREFIX = 'pokemon__';
@@ -195,7 +195,7 @@ $(document).on('init', function({ target }) {
     get();
 
     // at the bottom of the list get the next set of results and append them
-    target.onInfiniteScroll = done => {
+    event.target.onInfiniteScroll = done => {
       if (localStorage.getItem(URL)) {
         setTimeout(() => {
           get();
