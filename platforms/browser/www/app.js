@@ -80,7 +80,7 @@ function savePokemon(pokenumber, button) {
   try {
     addPokemonToGrid(pokenumber);
     //looks for its parent ons-list-item
-    button.closest('ons-list-item').hideExpansion();
+    //button.closest('ons-list-item').hideExpansion();
   } catch (error) {
     ons.notification.alert(error);
   }
