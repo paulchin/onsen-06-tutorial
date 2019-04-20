@@ -179,7 +179,7 @@ $(document).on('init', function(event) {
             return e.name;
           });
           var list = $('#pokemon-list')[0];
-          newPokemon.forEach((name, i) => {
+          newPokemon.forEach(function(name, i) {
             appendPokemon(nextPokenumber, name);
 
             var key = PREFIX + nextPokenumber;
@@ -204,9 +204,9 @@ $(document).on('init', function(event) {
     get();
 
     // at the bottom of the list get the next set of results and append them
-    event.target.onInfiniteScroll = done => {
+    event.target.onInfiniteScroll = function(done) {
       if (localStorage.getItem(URL)) {
-        setTimeout(() => {
+        setTimeout(function() {
           get();
           done();
         }, 200);
