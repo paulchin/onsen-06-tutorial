@@ -137,6 +137,7 @@ function appendPokemon(pokenumber, name) {
   list.append(ons.createElement(newElement));
 }
 
+//--- when pokemon.html loads ---
 $(document).on('init', function(event) {
   if (event.target.matches('#pokemon')) {
     // local storage keys
