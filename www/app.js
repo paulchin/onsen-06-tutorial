@@ -155,10 +155,10 @@ function appendPokemon(pokenumber, name) {
 }
 
 //--- when pokemon.html loads ---
+var nextPokenumber = 1; // use to keep track of the Pokémon numbers
 $(document).on('init', function(event) {
   if (event.target.matches('#pokemon')) {
     var url = 'https://pokeapi.co/api/v2/pokemon';
-    var nextPokenumber = 1; // use to keep track of the Pokémon numbers
 
     function get() {
       var json;
@@ -213,3 +213,10 @@ $(document).on('init', function(event) {
     };
   }
 });
+
+//--- called from saved.html button ---
+function removeAll() {
+  savedPokemon.length = 0;
+  $('#grid').html('');
+  ons.notification.alert('Cleared Save');
+}
