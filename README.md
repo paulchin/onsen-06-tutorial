@@ -1,5 +1,5 @@
-# Onsen splitter (side panel)
+# Onsen pokemon tutorial
 
-To demonstrate Onsen splitter
+Based on this:  https://onsen.io/v2/guide/tutorial.html#tutorial
 
 
