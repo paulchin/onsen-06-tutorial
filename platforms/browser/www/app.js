@@ -86,11 +86,17 @@ function addPokemonToGrid(pokenumber) {
   grid.appendChild(cell);
 }
 
-//--- called from pokemon.html ---
+//--- called from pokemon.html fails on nox player ---
+// function savePokemon(pokenumber, button) {
+//   addPokemonToGrid(pokenumber);
+//   //looks for its parent ons-list-item
+//   button.closest('ons-list-item').hideExpansion();
+// }
+
+//--- only non-jquery works on nox player ---
 function savePokemon(pokenumber, button) {
   addPokemonToGrid(pokenumber);
-  //looks for its parent ons-list-item
-  button.closest('ons-list-item').hideExpansion();
+  button.parentNode.parentNode.hideExpansion();
 }
 
 //--- to catch the show event from gallery.html ---
