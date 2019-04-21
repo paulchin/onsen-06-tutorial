@@ -80,12 +80,12 @@ function addPokemonToGrid(pokenumber) {
   //var image = $('<img>').attr('src', `img/${pokenumber}.png`)[0];
 
   try {
-    cell.append(image); // throws undefined error why?
+    cell.appendChild(image); // throws undefined error why?
   } catch (error) {
     ons.notification.alert(error);
   }
 
-  grid.append(cell);
+  grid.appendChild(cell);
 }
 
 //--- called from pokemon.html ---
