@@ -59,10 +59,6 @@ function addPokemonToGrid(pokenumber) {
 
   //------------ test ----------
   var cell = document.createElement('div');
-  cell.onclick = () =>
-    document
-      .querySelector('#navigator')
-      .bringPageTop('gallery.html', { data: { pokenumber, savedPokemon } });
 
   cell.onclick = function() {
     document.querySelector('#navigator').bringPageTop('gallery.html', obj);
