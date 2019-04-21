@@ -59,9 +59,7 @@ function addPokemonToGrid(pokenumber) {
 
   //--- works as well ---
   var cell = $('<div>').click(function() {
-    $('#navigator')[0].bringPageTop('gallery.html', {
-      data: { pokenumber, savedPokemon }
-    });
+    $('#navigator')[0].bringPageTop('gallery.html', obj);
   })[0];
   var imgsrc = 'img/' + pokenumber + '.png';
   var image = $('<img>', { src: imgsrc })[0]; //--create new image
