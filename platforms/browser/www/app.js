@@ -57,12 +57,28 @@ function addPokemonToGrid(pokenumber) {
   //   $('#navigator')[0].bringPageTop('gallery.html', obj);
   // })[0];
 
+  //------------ test ----------
+  var cell = document.createElement('div');
+  cell.onclick = () =>
+    document
+      .querySelector('#navigator')
+      .bringPageTop('gallery.html', { data: { pokenumber, savedPokemon } });
+
+  cell.onclick = function() {
+    document.querySelector('#navigator').bringPageTop('gallery.html', obj);
+  };
+
+  var image = document.createElement('img');
+  var newImage = 'img/' + pokenumber + '.png';
+  image.setAttribute('src', newImage);
+  //------------- end test --------------
+
   //--- works as well ---
-  var cell = $('<div>').click(function() {
-    $('#navigator')[0].bringPageTop('gallery.html', obj);
-  })[0];
-  var imgsrc = 'img/' + pokenumber + '.png';
-  var image = $('<img>', { src: imgsrc })[0]; //--create new image
+  // var cell = $('<div>').click(function() {
+  //   $('#navigator')[0].bringPageTop('gallery.html', obj);
+  // })[0];
+  // var imgsrc = 'img/' + pokenumber + '.png';
+  // var image = $('<img>', { src: imgsrc })[0]; //--create new image
 
   //--- works as well ---
   //var image = $('<img>').attr('src', `img/${pokenumber}.png`)[0];
