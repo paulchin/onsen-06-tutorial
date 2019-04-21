@@ -46,18 +46,16 @@ function addPokemonToGrid(pokenumber) {
   // now add the new pokemon to the grid in saved.html
   var grid = $('#grid')[0];
 
-  //create a new div element
-  // var obj = {
-  //   data: { pokenumber, savedPokemon }
-  // };
   var obj = {
     data: { pokenumber: pokenumber, savedPokemon: savedPokemon }
   };
+
+  //--- jquery fails in nox player ----
   // var cell = $('<div>').on('click', function() {
   //   $('#navigator')[0].bringPageTop('gallery.html', obj);
   // })[0];
 
-  //------------ test ----------
+  //--------- only non-jquery can work for this part ----------
   var cell = document.createElement('div');
 
   cell.onclick = function() {
@@ -67,9 +65,9 @@ function addPokemonToGrid(pokenumber) {
   var image = document.createElement('img');
   var newImage = 'img/' + pokenumber + '.png';
   image.setAttribute('src', newImage);
-  //------------- end test --------------
+  //------------- end non-jquery --------------
 
-  //--- works as well ---
+  //--- works as well but not for nox-player ---
   // var cell = $('<div>').click(function() {
   //   $('#navigator')[0].bringPageTop('gallery.html', obj);
   // })[0];
